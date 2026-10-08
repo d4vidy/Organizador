@@ -16,7 +16,7 @@ import ModalNovaCategoria from '../componentes/ModalNovaCategoria';
 import { styles } from '../style/CadastroStyle';
 import { FlatList } from 'react-native-gesture-handler';
 
-export default function CadastroProduto() {
+export default function CadastroProduto({ navigation }) {
   const [nome, setNome] = useState('');
   const [categoria, setCategoria] = useState('');
   const [quantidade, setQuantidade] = useState('');

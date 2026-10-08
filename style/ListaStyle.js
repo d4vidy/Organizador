@@ -11,8 +11,18 @@ export const styles = StyleSheet.create({
     backgroundColor: '#e0f7fa',
     borderRadius: 8,
   },
-  text: {
+  texto: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  titulo: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  subtitulo: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });
