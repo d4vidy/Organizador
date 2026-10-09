@@ -25,4 +25,17 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
+  botao: {
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+
+  textoBotao: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
 });

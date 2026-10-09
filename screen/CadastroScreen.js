@@ -14,7 +14,6 @@ import ModalMedida from '../componentes/ModalMedida';
 import ModalNovaCategoria from '../componentes/ModalNovaCategoria';
 
 import { styles } from '../style/CadastroStyle';
-import { FlatList } from 'react-native-gesture-handler';
 
 export default function CadastroProduto({ navigation }) {
   const [nome, setNome] = useState('');
@@ -99,7 +98,7 @@ export default function CadastroProduto({ navigation }) {
         onPress={() => setDropdownCategoriaAberto(true)}
       >
         <Text
-         style={categoria 
+          style={categoria 
           ? styles.textoSelecionado
           : styles.placeholder}>
           {categoria || 'Selecione uma categoria.'}
