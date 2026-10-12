@@ -6,9 +6,14 @@ import {
     TouchableOpacity,
     FlatList,
 } from 'react-native';
-import { styles } from '../style/ModalStyle';
+import { styles } from '../style/ModalCadastroStyle';
 
-export default function ModalCategoria({ visible, categorias, onSelecionar, onFechar, }) {
+export default function ModalCategoria({ 
+    visible, 
+    categorias, 
+    onSelecionar, 
+    onFechar, 
+}) {
     return (
         <Modal
             visible={visible}

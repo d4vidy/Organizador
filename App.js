@@ -11,6 +11,7 @@ const Tab = createBottomTabNavigator();
 import HomeScreen from './screen/HomeScreen';
 import ListaScreen from './screen/ListaScreen';
 import CadastroProduto from './screen/CadastroScreen';
+import LancamentoScreen from './screen/LancamentoScreen';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name="Tela Inicial" component={HomeScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Lista" component={ListaScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="Cadastro" component={CadastroProduto} options={{ headerShown: false}}/>
+        <Stack.Screen name="Lançamento" component={LancamentoScreen} options={{ headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

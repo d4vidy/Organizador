@@ -1,10 +1,7 @@
 import React from 'react';
-import { FlatList, View, Text, Touchable } from 'react-native';
+import { FlatList, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../style/ListaStyle';
 import {Ionicons} from '@expo/vector-icons';
-
-import CadastroScreen from './CadastroScreen';
-import LançamentoScreen from './LançamentoScreen';
 
 const data = Array.from(
   { length: 80 },
@@ -21,7 +18,7 @@ export default function ListaScreen({ navigation }) {
             Lançamento
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.botao} onPress={() => navigation.navigate(CadastroScreen)}>
+        <TouchableOpacity style={styles.botao} onPress={() => navigation.navigate('Cadastro')}>
           <Text style={styles.textoBotao}>
             <Ionicons name="create" size={20} color="fff"/>
             Cadastrar Item

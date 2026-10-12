@@ -76,6 +76,8 @@ export default function CadastroProduto({ navigation }) {
     setQuantidade('');
     setUnMedida('');
     setQuantidade2('');
+    
+    navigation.goBack();
   }
 
   return (
@@ -151,6 +153,13 @@ export default function CadastroProduto({ navigation }) {
         onPress={cadastrarProduto}
       >
         <Text style={styles.textoBotao}>Cadastrar Produto</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.botaoVoltar}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.textoBotaoVoltar}>Voltar</Text>
       </TouchableOpacity>
 
       <ModalCategoria
