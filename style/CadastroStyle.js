@@ -116,4 +116,54 @@ export const styles = StyleSheet.create({
     fontSize: 16, 
     fontWeight: 'bold', 
   },
+  labelLancamento: {
+    marginTop: 20,
+  },
+  seletorLancamento: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 8,
+    marginBottom: 20,
+  },
+  opcaoLancamento: {
+    flex: 1,
+    minHeight: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+  },
+  entradaSelecionada: {
+    backgroundColor: '#16803c',
+    borderColor: '#16803c',
+  },
+  saidaSelecionada: {
+    backgroundColor: '#d93025',
+    borderColor: '#d93025',
+  },
+  textoOpcaoLancamento: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  textoOpcaoSelecionada: {
+    color: '#fff',
+  },
+  botaoVoltar: {
+    backgroundColor: '#e0e0e0',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  textoBotaoVoltar: {
+    color: '#333',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
 });

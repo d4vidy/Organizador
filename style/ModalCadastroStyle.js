@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   caixa: {
     width: '85%',
     maxHeight: '60%',
@@ -15,23 +14,31 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 20,
   },
-
   titulo: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 15,
   },
-
   opcao: {
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
-
   textoOpcao: {
     fontSize: 17,
   },
-
+  botao: {
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  textoBotao: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
   cancelar: {
     alignItems: 'center',
     marginTop: 15,
