@@ -8,7 +8,7 @@ import {
   Modal
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { cadastrarProduto as salvarProdutoNoBanco } from '../services/Produto';
 import ModalCategoria from '../componentes/ModalCategoria';
 import ModalMedida from '../componentes/ModalMedida';
 import ModalNovaCategoria from '../componentes/ModalNovaCategoria';
@@ -52,7 +52,8 @@ export default function CadastroProduto({ navigation }) {
     setNovaCategoria(''); 
     setModalCategoria(false); }
 
-  function cadastrarProduto() {
+  
+  async function cadastrarProduto() {
     if (
       nome.trim() === '' ||
       categoria.trim() === '' ||
@@ -60,25 +61,61 @@ export default function CadastroProduto({ navigation }) {
       unmedida.trim() === '' ||
       quantidade2.trim() === ''
     ) {
-      Alert.alert('Atenção!', 'Preencha todos os campos');
+      Alert.alert('Atenção!', 'Preencha todos os campos.');
       return;
     }
 
-    Alert.alert('Produto cadastrado com sucesso!',
-       `Nome: ${nome}\n
-        Categoria: ${categoria}\n
-        Quantidade: ${quantidade}\n 
-        Unidade de medida:${unmedida}\n
-        Quantidade por ${unmedida}: ${quantidade2}`);
-    
-    setNome('');
-    setCategoria('');
-    setQuantidade('');
-    setUnMedida('');
-    setQuantidade2('');
-    
-    navigation.goBack();
+    const qtd = Number(quantidade.replace(',', '.'));
+    const qtdPorUnidade = Number(quantidade2.replace(',', '.'));
+
+    if (
+      !Number.isFinite(qtd) ||
+      !Number.isFinite(qtdPorUnidade) ||
+      qtd <= 0 ||
+      qtdPorUnidade <= 0
+    ) {
+      Alert.alert(
+        'Atenção!',
+        'Informe quantidades numéricas maiores que zero.'
+      );
+      return;
+    }
+
+    try {
+      await salvarProdutoNoBanco({
+        nome: nome.trim(),
+        categoria: categoria.trim(),
+        quantidade: qtd,
+        unmedida,
+        quantidade2: qtdPorUnidade,
+      });
+
+      setNome('');
+      setCategoria('');
+      setQuantidade('');
+      setUnMedida('');
+      setQuantidade2('');
+
+      Alert.alert(
+        'Sucesso!',
+        'Produto cadastrado no banco de dados.',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.goBack(),
+          },
+        ]
+      );
+    } catch (erro) {
+      console.error('Erro ao cadastrar produto:', erro);
+
+      Alert.alert(
+        'Erro!',
+        'Não foi possível cadastrar o produto. Verifique sua conexão e as regras do Firestore.'
+      );
+    }
   }
+
 
   return (
     <View style={styles.container}>
