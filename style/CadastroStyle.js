@@ -1,123 +1,134 @@
+
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
+    paddingTop: 12,
+    backgroundColor: '#F7FAFA',
   },
-
   titulo: {
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
+    color: '#263238',
+    marginBottom: 24,
   },
-
   label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#37474F',
+    marginBottom: 7,
   },
-
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 15,
-    fontSize: 16,
+    borderColor: '#CFD8DC',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 18,
+    fontSize: 15,
+    color: '#263238',
   },
-
   botao: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: '#00796B',
+    minHeight: 49,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+    borderRadius: 12,
     alignItems: 'center',
-    marginTop: 10,
-  },
-
-  textoBotao: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-
-  dropdown: {
-    height: 50,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 12,
+    justifyContent: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  placeholder: {
-    color: '#888',
-    fontSize: 16,
-  },
-
-  textoSelecionado: {
-    color: '#222',
-    fontSize: 16,
-  },
-
-  seta: {
-    fontSize: 16,
-  },
-
-  botaoCategoria: {
+    gap: 8,
     marginTop: 8,
-    marginBottom: 20,
+    elevation: 1,
   },
-
-  textoBotaoCategoria: {
-    color: '#007AFF',
+  textoBotao: {
+    color: '#FFFFFF',
     fontSize: 15,
     fontWeight: 'bold',
   },
-  modalFundo: { 
-    flex: 1, 
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-  }, 
-  modalCaixa: { 
-    width: '85%', 
-    maxHeight: '60%', 
-    backgroundColor: '#fff', 
-    borderRadius: 12, 
-    padding: 20, 
-  }, 
-  modalTitulo: { 
-    fontSize: 20, 
-    fontWeight: 'bold', 
-    marginBottom: 15, 
-  }, 
-  modalOpcao: { 
-    paddingVertical: 15, 
-    borderBottomWidth: 1, 
-    borderBottomColor: '#eee', 
-  }, 
-  modalTextoOpcao: { 
-    fontSize: 17, 
-  }, 
-  modalCancelar: { 
-    alignItems: 'center', 
-    marginTop: 15, 
-  }, 
-  modalTextoCancelar: { 
-    color: '#ff3b30', 
-    fontSize: 16, 
-    fontWeight: 'bold', 
+  dropdown: {
+    minHeight: 49,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#CFD8DC',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+    marginBottom: 8,
+  },
+  placeholder: {
+    flex: 1,
+    color: '#78909C',
+    fontSize: 15,
+  },
+  textoSelecionado: {
+    flex: 1,
+    color: '#263238',
+    fontSize: 15,
+  },
+  seta: {
+    fontSize: 16,
+    color: '#00796B',
+  },
+  botaoCategoria: {
+    alignSelf: 'flex-start',
+    marginTop: 3,
+    marginBottom: 20,
+    paddingVertical: 6,
+  },
+  textoBotaoCategoria: {
+    color: '#00796B',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  modalFundo: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalCaixa: {
+    width: '100%',
+    maxHeight: '75%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+  },
+  modalTitulo: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: '#263238',
+    marginBottom: 14,
+  },
+  modalOpcao: {
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ECEFF1',
+  },
+  modalTextoOpcao: {
+    fontSize: 15,
+    color: '#37474F',
+  },
+  modalCancelar: {
+    alignItems: 'center',
+    marginTop: 14,
+    paddingVertical: 10,
+  },
+  modalTextoCancelar: {
+    color: '#00796B',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   labelLancamento: {
-    marginTop: 20,
+    marginTop: 12,
   },
   seletorLancamento: {
     flexDirection: 'row',
@@ -132,38 +143,40 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: '#CFD8DC',
+    borderRadius: 12,
     padding: 10,
   },
   entradaSelecionada: {
-    backgroundColor: '#16803c',
-    borderColor: '#16803c',
+    backgroundColor: '#00796B',
+    borderColor: '#00796B',
   },
   saidaSelecionada: {
-    backgroundColor: '#d93025',
-    borderColor: '#d93025',
+    backgroundColor: '#C62828',
+    borderColor: '#C62828',
   },
   textoOpcaoLancamento: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#37474F',
   },
   textoOpcaoSelecionada: {
-    color: '#fff',
+    color: '#FFFFFF',
   },
   botaoVoltar: {
-    backgroundColor: '#e0e0e0',
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: '#E0F2F1',
+    padding: 14,
+    borderRadius: 12,
     alignItems: 'center',
-    marginTop: 5,
+    justifyContent: 'center',
+    minHeight: 48,
+    marginTop: 10,
   },
   textoBotaoVoltar: {
-    color: '#333',
-    fontSize: 17,
+    color: '#00796B',
+    fontSize: 15,
     fontWeight: 'bold',
   },
 });

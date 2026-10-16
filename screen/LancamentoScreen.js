@@ -10,13 +10,17 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { styles } from '../style/CadastroStyle';
-import { listarProdutos } from '../services/Produto';
+import { listarProdutos } from '../services/ProdutoService';
 import { registrarLancamento } from '../services/LancamentoService';
 
 export default function LancamentoScreen({ navigation }) {
@@ -128,212 +132,226 @@ export default function LancamentoScreen({ navigation }) {
       );
     } finally {
       setSalvando(false);
+      navigation.goBack();
     }
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>
-        Lançamento de Produto
-      </Text>
-
-      <Text style={styles.label}>Produto:</Text>
-
-      <TouchableOpacity
-        style={styles.dropdown}
-        onPress={() => setModalProdutoAberto(true)}
-        activeOpacity={0.7}
-        disabled={salvando}
-      >
-        <Text
-          style={
-            produtoSelecionado
-              ? styles.textoSelecionado
-              : styles.placeholder
-          }
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          {produtoSelecionado
-            ? produtoSelecionado.nome
-            : 'Selecione um produto'}
-        </Text>
-
-        <Ionicons
-          name="caret-down"
-          size={20}
-          color="#000"
-        />
-      </TouchableOpacity>
-
-      {produtoSelecionado && (
-        <Text>
-          Estoque atual: {produtoSelecionado.quantidade}{' '}
-          {produtoSelecionado.unmedida}
-        </Text>
-      )}
-
-      <Text style={[styles.label, styles.labelLancamento]}>
-        Quantidade:
-      </Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Ex: 10"
-        keyboardType="decimal-pad"
-        value={quantidade}
-        onChangeText={setQuantidade}
-        editable={!salvando}
-      />
-
-      <Text style={styles.label}>
-        Tipo de lançamento:
-      </Text>
-
-      <View style={styles.seletorLancamento}>
-        <TouchableOpacity
-          style={[
-            styles.opcaoLancamento,
-            tipoLancamento === 'Entrada' &&
-              styles.entradaSelecionada,
-          ]}
-          onPress={() => setTipoLancamento('Entrada')}
-          activeOpacity={0.8}
-          disabled={salvando}
-        >
-          <Ionicons
-            name="add-circle-outline"
-            size={22}
-            color={
-              tipoLancamento === 'Entrada'
-                ? '#fff'
-                : '#16803c'
-            }
-          />
-
-          <Text
-            style={[
-              styles.textoOpcaoLancamento,
-              tipoLancamento === 'Entrada' &&
-                styles.textoOpcaoSelecionada,
-            ]}
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
           >
-            Entrada
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.opcaoLancamento,
-            tipoLancamento === 'Saída' &&
-              styles.saidaSelecionada,
-          ]}
-          onPress={() => setTipoLancamento('Saída')}
-          activeOpacity={0.8}
-          disabled={salvando}
-        >
-          <Ionicons
-            name="remove-circle-outline"
-            size={22}
-            color={
-              tipoLancamento === 'Saída'
-                ? '#fff'
-                : '#d93025'
-            }
-          />
-
-          <Text
-            style={[
-              styles.textoOpcaoLancamento,
-              tipoLancamento === 'Saída' &&
-                styles.textoOpcaoSelecionada,
-            ]}
-          >
-            Saída
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity
-        style={styles.botao}
-        onPress={cadastrarLancamento}
-        activeOpacity={0.8}
-        disabled={salvando}
-      >
-        {salvando ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.textoBotao}>
-            Cadastrar lançamento
-          </Text>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.botaoVoltar}
-        onPress={() => navigation.goBack()}
-        activeOpacity={0.8}
-        disabled={salvando}
-      >
-        <Text style={styles.textoBotaoVoltar}>
-          Voltar
-        </Text>
-      </TouchableOpacity>
-
-      <Modal
-        visible={modalProdutoAberto}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalProdutoAberto(false)}
-      >
-        <View style={styles.modalFundo}>
-          <View style={styles.modalCaixa}>
-            <Text style={styles.modalTitulo}>
-              Selecionar produto
+            <Text style={styles.titulo}>
+              Lançamento de Produto
             </Text>
 
-            {carregandoProdutos ? (
-              <ActivityIndicator size="large" />
-            ) : erroProdutos ? (
-              <Text>
-                Não foi possível carregar os produtos.
-              </Text>
-            ) : (
-              <FlatList
-                data={produtos}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.modalOpcao}
-                    onPress={() => selecionarProduto(item)}
-                  >
-                    <Text style={styles.modalTextoOpcao}>
-                      {item.nome}
-                    </Text>
-
-                    <Text>
-                      Estoque: {item.quantidade}{' '}
-                      {item.unmedida}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                ListEmptyComponent={
-                  <Text>
-                    Nenhum produto cadastrado.
-                  </Text>
-                }
-              />
-            )}
+            <Text style={styles.label}>Produto:</Text>
 
             <TouchableOpacity
-              style={styles.modalCancelar}
-              onPress={() => setModalProdutoAberto(false)}
+              style={styles.dropdown}
+              onPress={() => setModalProdutoAberto(true)}
+              activeOpacity={0.7}
+              disabled={salvando}
             >
-              <Text style={styles.modalTextoCancelar}>
-                Cancelar
+              <Text
+                style={
+                  produtoSelecionado
+                    ? styles.textoSelecionado
+                    : styles.placeholder
+                }
+              >
+                {produtoSelecionado
+                  ? produtoSelecionado.nome
+                  : 'Selecione um produto'}
+              </Text>
+
+              <Ionicons
+                name="caret-down"
+                size={20}
+                color="#000"
+              />
+            </TouchableOpacity>
+
+            {produtoSelecionado && (
+              <Text>
+                Estoque atual: {produtoSelecionado.quantidade}{' '}
+                {produtoSelecionado.unmedida}
+              </Text>
+            )}
+
+            <Text style={[styles.label, styles.labelLancamento]}>
+              Quantidade:
+            </Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Ex: 10"
+              keyboardType="decimal-pad"
+              value={quantidade}
+              onChangeText={setQuantidade}
+              editable={!salvando}
+            />
+
+            <Text style={styles.label}>
+              Tipo de lançamento:
+            </Text>
+
+            <View style={styles.seletorLancamento}>
+              <TouchableOpacity
+                style={[
+                  styles.opcaoLancamento,
+                  tipoLancamento === 'Entrada' &&
+                  styles.entradaSelecionada,
+                ]}
+                onPress={() => setTipoLancamento('Entrada')}
+                activeOpacity={0.8}
+                disabled={salvando}
+              >
+                <Ionicons
+                  name="add-circle-outline"
+                  size={22}
+                  color={
+                    tipoLancamento === 'Entrada'
+                      ? '#fff'
+                      : '#16803c'
+                  }
+                />
+
+                <Text
+                  style={[
+                    styles.textoOpcaoLancamento,
+                    tipoLancamento === 'Entrada' &&
+                    styles.textoOpcaoSelecionada,
+                  ]}
+                >
+                  Entrada
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.opcaoLancamento,
+                  tipoLancamento === 'Saída' &&
+                  styles.saidaSelecionada,
+                ]}
+                onPress={() => setTipoLancamento('Saída')}
+                activeOpacity={0.8}
+                disabled={salvando}
+              >
+                <Ionicons
+                  name="remove-circle-outline"
+                  size={22}
+                  color={
+                    tipoLancamento === 'Saída'
+                      ? '#fff'
+                      : '#d93025'
+                  }
+                />
+
+                <Text
+                  style={[
+                    styles.textoOpcaoLancamento,
+                    tipoLancamento === 'Saída' &&
+                    styles.textoOpcaoSelecionada,
+                  ]}
+                >
+                  Saída
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              style={styles.botao}
+              onPress={cadastrarLancamento}
+              activeOpacity={0.8}
+              disabled={salvando}
+            >
+              {salvando ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.textoBotao}>
+                  Cadastrar lançamento
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoVoltar}
+              onPress={() => navigation.goBack()}
+              activeOpacity={0.8}
+              disabled={salvando}
+            >
+              <Text style={styles.textoBotaoVoltar}>
+                Voltar
               </Text>
             </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+
+        <Modal
+          visible={modalProdutoAberto}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setModalProdutoAberto(false)}
+        >
+          <View style={styles.modalFundo}>
+            <View style={styles.modalCaixa}>
+              <Text style={styles.modalTitulo}>
+                Selecionar produto
+              </Text>
+
+              {carregandoProdutos ? (
+                <ActivityIndicator size="large" />
+              ) : erroProdutos ? (
+                <Text>
+                  Não foi possível carregar os produtos.
+                </Text>
+              ) : (
+                <FlatList
+                  data={produtos}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      style={styles.modalOpcao}
+                      onPress={() => selecionarProduto(item)}
+                    >
+                      <Text style={styles.modalTextoOpcao}>
+                        {item.nome}
+                      </Text>
+
+                      <Text>
+                        Estoque: {item.quantidade}{' '}
+                        {item.unmedida}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                  ListEmptyComponent={
+                    <Text>
+                      Nenhum produto cadastrado.
+                    </Text>
+                  }
+                />
+              )}
+
+              <TouchableOpacity
+                style={styles.modalCancelar}
+                onPress={() => setModalProdutoAberto(false)}
+              >
+                <Text style={styles.modalTextoCancelar}>
+                  Cancelar
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
