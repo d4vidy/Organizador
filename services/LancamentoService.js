@@ -1,4 +1,3 @@
-
 import {
   collection,
   doc,
@@ -6,7 +5,17 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 
-import { db } from '../config/Firebase';
+import { db, auth } from '../config/Firebase';
+
+function obterUid() {
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    throw new Error('Nenhum usuário autenticado.');
+  }
+
+  return usuario.uid;
+}
 
 export async function registrarLancamento({
   produtoId,
@@ -28,8 +37,19 @@ export async function registrarLancamento({
     throw new Error('A quantidade deve ser maior que zero.');
   }
 
-  const produtoRef = doc(db, 'produtos', produtoId);
-  const lancamentoRef = doc(collection(db, 'lancamentos'));
+  const uid = obterUid();
+
+  const produtoRef = doc(
+    db,
+    'usuarios',
+    uid,
+    'produtos',
+    produtoId
+  );
+
+  const lancamentoRef = doc(
+    collection(db, 'usuarios', uid, 'lancamentos')
+  );
 
   await runTransaction(db, async (transaction) => {
     const produtoSnapshot = await transaction.get(produtoRef);

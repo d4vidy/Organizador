@@ -86,7 +86,6 @@ export default function CadastroProduto({ navigation, route }) {
     async function carregarCategorias() {
       try {
         const resultado = await listarCategorias();
-        console.log('Categorias carregadas:', resultado);
         setCategorias(resultado);
       } catch (erro) {
         console.error('Erro ao carregar categorias:', erro);
@@ -210,11 +209,19 @@ export default function CadastroProduto({ navigation, route }) {
         );
       }
     } catch (erro) {
-      console.error('Erro ao salvar produto:', erro);
+      const erroDuplicidade =
+        erro.message === 'Já existe outro produto com esse nome.' ||
+        erro.message === 'Já existe um produto com esse nome.';
+
+      if (!erroDuplicidade) {
+        console.error('Erro ao salvar produto:', erro);
+      }
 
       Alert.alert(
         'Erro!',
-        'Não foi possível salvar o produto. Verifique sua conexão e as regras do Firestore.'
+        erroDuplicidade
+          ? erro.message
+          : 'Não foi possível salvar o produto. Verifique sua conexão e as regras do Firestore.'
       );
     }
   }

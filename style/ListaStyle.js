@@ -243,4 +243,9 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     marginLeft: 8,
   },
+  acoesCabecalho: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 12,
+  },
 });

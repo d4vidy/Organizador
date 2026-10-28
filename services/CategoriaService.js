@@ -1,46 +1,44 @@
+
 import {
   collection,
   addDoc,
   getDocs,
   doc,
   updateDoc,
-  query,
-  where,
-  orderBy,
   serverTimestamp,
 } from 'firebase/firestore';
 
-import { db } from '../config/Firebase';
+import { db, auth } from '../config/Firebase';
 
-const categoriasRef = collection(db, 'categoria');
+function obterUid() {
+  const usuario = auth.currentUser;
 
+  if (!usuario) {
+    throw new Error('Nenhum usuário autenticado.');
+  }
 
-export async function listarCategorias() {
-  const resultado = await getDocs(categoriasRef);
-
-  console.log(
-    'Quantidade de documentos:',
-    resultado.size
-  );
-
-  console.log(
-    'Documentos encontrados:',
-    resultado.docs.map((item) => ({
-      id: item.id,
-      dados: item.data(),
-    }))
-  );
-
-  return resultado.docs.map((item) => ({
-    id: item.id,
-    ...item.data(),
-  }))
-  .filter((categoria) => categoria.ativa !== false)
-  .sort((a, b) =>
-    (a.nome || '').localeCompare(b.nome || '', 'pt-BR')
-  );
+  return usuario.uid;
 }
 
+function obterCategoriasRef() {
+  const uid = obterUid();
+
+  return collection(db, 'usuarios', uid, 'categorias');
+}
+
+export async function listarCategorias() {
+  const resultado = await getDocs(obterCategoriasRef());
+
+  return resultado.docs
+    .map((item) => ({
+      id: item.id,
+      ...item.data(),
+    }))
+    .filter((categoria) => categoria.ativa !== false)
+    .sort((a, b) =>
+      (a.nome || '').localeCompare(b.nome || '', 'pt-BR')
+    );
+}
 
 export async function cadastrarCategoria(nome) {
   const nomeFormatado = nome.trim();
@@ -53,7 +51,7 @@ export async function cadastrarCategoria(nome) {
 
   const duplicada = categorias.some(
     (item) =>
-      item.nome.trim().toLowerCase() ===
+      (item.nome || '').trim().toLowerCase() ===
       nomeFormatado.toLowerCase()
   );
 
@@ -61,7 +59,7 @@ export async function cadastrarCategoria(nome) {
     throw new Error('Essa categoria já existe.');
   }
 
-  const documento = await addDoc(categoriasRef, {
+  const documento = await addDoc(obterCategoriasRef(), {
     nome: nomeFormatado,
     ativa: true,
     criadoEm: serverTimestamp(),
@@ -75,7 +73,15 @@ export async function cadastrarCategoria(nome) {
 }
 
 export async function desativarCategoria(id) {
-  const categoriaRef = doc(db, 'categorias', id);
+  const uid = obterUid();
+
+  const categoriaRef = doc(
+    db,
+    'usuarios',
+    uid,
+    'categorias',
+    id
+  );
 
   await updateDoc(categoriaRef, {
     ativa: false,

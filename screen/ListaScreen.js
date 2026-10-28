@@ -9,6 +9,8 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { signOut } from 'firebase/auth';
+import { auth } from '../config/Firebase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -206,24 +208,67 @@ export default function ListaScreen({ navigation }) {
     );
   };
 
+  const realizarLogout = () => {
+    Alert.alert(
+      'Sair da conta',
+      'Deseja realmente sair do Organizador?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Sair',
+          onPress: async () => {
+            try {
+              await signOut(auth);
+            } catch (error) {
+              console.error('Erro ao sair da conta:', error);
+              Alert.alert('Erro', 'Não foi possível sair da conta.');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cabecalho}>
         <View style={styles.linhaCabecalho}>
           <Text style={styles.titulo}>Lista de Itens</Text>
-          <TouchableOpacity
-            style={styles.botaoOpcoes}
-            onPress={confirmarExclusao}
-            activeOpacity={0.6}
-            accessibilityRole="button"
-            accessibilityLabel="Apagar todos os produtos"
-          >
-            <Ionicons
-              name="ellipsis-horizontal-circle"
-              size={30}
-              color="#00796B"
-            />
-          </TouchableOpacity>
+
+          <View style={styles.acoesCabecalho}>
+            {/* Botão de Logout */}
+            <TouchableOpacity
+              style={styles.botaoOpcoes}
+              onPress={realizarLogout}
+              activeOpacity={0.6}
+              accessibilityRole="button"
+              accessibilityLabel="Sair da conta"
+            >
+              <Ionicons
+                name="log-out-outline"
+                size={30}
+                color="#d93025"
+              />
+            </TouchableOpacity>
+
+            {/* Botão de apagar todos os produtos */}
+            <TouchableOpacity
+              style={styles.botaoOpcoes}
+              onPress={confirmarExclusao}
+              activeOpacity={0.6}
+              accessibilityRole="button"
+              accessibilityLabel="Apagar todos os produtos"
+            >
+              <Ionicons
+                name="trash-outline"
+                size={30}
+                color="#d93025"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <Text style={styles.subtitulo}>
           Encontre e organize seus produtos

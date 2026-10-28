@@ -10,21 +10,56 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 
-import { db } from '../config/Firebase';
+import { db, auth } from '../config/Firebase';
 
-const produtosRef = collection(db, 'produtos');
+function obterUid() {
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    throw new Error('Nenhum usuário autenticado.');
+  }
+
+  return usuario.uid;
+}
+
+function obterProdutosRef() {
+  const uid = obterUid();
+
+  return collection(db, 'usuarios', uid, 'produtos');
+}
+
 
 export async function cadastrarProduto(produto) {
-  const docRef = await addDoc(produtosRef, {
+  const nomeFormatado = produto.nome.trim();
+
+  if (!nomeFormatado) {
+    throw new Error('Informe o nome do produto.');
+  }
+
+  const produtos = await listarProdutos();
+
+  const duplicado = produtos.some(
+    (item) =>
+      (item.nome || '').trim().toLowerCase() ===
+      nomeFormatado.toLowerCase()
+  );
+
+  if (duplicado) {
+    throw new Error('Já existe um produto com esse nome.');
+  }
+
+  const docRef = await addDoc(obterProdutosRef(), {
     ...produto,
+    nome: nomeFormatado,
     criadoEm: serverTimestamp(),
   });
 
   return docRef.id;
 }
 
+
 export async function listarProdutos() {
-  const resultado = await getDocs(produtosRef);
+  const resultado = await getDocs(obterProdutosRef());
 
   return resultado.docs.map((item) => ({
     id: item.id,
@@ -32,18 +67,58 @@ export async function listarProdutos() {
   }));
 }
 
+
 export async function atualizarProduto(id, dados) {
-  const produtoRef = doc(db, 'produtos', id);
-  await updateDoc(produtoRef, dados);
+  const uid = obterUid();
+  const nomeFormatado = dados.nome.trim();
+
+  if (!nomeFormatado) {
+    throw new Error('Informe o nome do produto.');
+  }
+
+  const produtos = await listarProdutos();
+
+  const duplicado = produtos.some(
+    (item) =>
+      item.id !== id &&
+      (item.nome || '').trim().toLowerCase() ===
+        nomeFormatado.toLowerCase()
+  );
+
+  if (duplicado) {
+    throw new Error('Já existe outro produto com esse nome.');
+  }
+
+  const produtoRef = doc(
+    db,
+    'usuarios',
+    uid,
+    'produtos',
+    id
+  );
+
+  await updateDoc(produtoRef, {
+    ...dados,
+    nome: nomeFormatado,
+  });
 }
 
 export async function excluirProduto(id) {
-  const produtoRef = doc(db, 'produtos', id);
+  const uid = obterUid();
+
+  const produtoRef = doc(
+    db,
+    'usuarios',
+    uid,
+    'produtos',
+    id
+  );
+
   await deleteDoc(produtoRef);
 }
 
 export async function excluirTodosProdutos() {
-  const resultado = await getDocs(produtosRef);
+  const resultado = await getDocs(obterProdutosRef());
 
   if (resultado.empty) {
     return 0;
